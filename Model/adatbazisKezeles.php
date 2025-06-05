@@ -1,6 +1,32 @@
 <?php
 abstract class AdatbazisKezeles {
 
+    public static function termekIdKerese(string $szeriaszam): int {
+        // Létezik-e már ez a termék az adatbázisban ugyanezel a szériaszámmal leadva?
+        // - ha nem, 0-t adunk vissza
+        // - ha igen, visszaadjuk az ID-t
+
+        $id = 0;
+        try {
+            $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
+            $stmt = $con->prepare("SELECT `id` FROM `termek` WHERE `szeriaszam`=? AND `statuszid`=1;");
+            
+            $stmt->bind_param("s", $szeriaszam);  
+            $stmt->execute();
+            $stmt->bind_result($id2);
+
+            while($stmt->fetch()){
+                $id = $id2;
+            }
+
+            $stmt->close();
+            $con->close();
+        } catch (Exception $e) {
+            echo("Hiba: " . $e->getMessage());
+        }
+        return $id; 
+    }
+
     public static function termekFelvitel(Termek $termek): void {
         try {
             $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
@@ -22,6 +48,38 @@ abstract class AdatbazisKezeles {
         } catch (Exception $e) {
             echo("Hiba: " . $e->getMessage());
         }
+    }
+
+    public static function kapcsolattartoIdKerese(Kapcsolattarto $kapcsolattarto): int {
+        // Létezik-e már ez a kapcsolattartó az adatbázisban?
+        // - ha nem, 0-t adunk vissza
+        // - ha igen, visszaadjuk az ID-t
+
+        $id = 0;
+        try {
+            $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
+            $stmt = $con->prepare("SELECT `id` FROM `kapcsolattarto` WHERE `vnev`=? AND `knev`=? AND `unev`=? AND `telefon`=? AND `email`=? LIMIT 1;");
+                        
+            $vnev = $kapcsolattarto->getVnev();
+            $knev = $kapcsolattarto->getKnev();
+            $unev = $kapcsolattarto->getUnev();
+            $telefon = $kapcsolattarto->getTelefon();
+            $email = $kapcsolattarto->getEmail();
+            
+            $stmt->bind_param("sssss", $vnev, $knev, $unev, $telefon, $email);  
+            $stmt->execute();
+            $stmt->bind_result($id2);
+
+            while($stmt->fetch()){
+                $id = $id2;
+            }
+
+            $stmt->close();
+            $con->close();
+        } catch (Exception $e) {
+            echo("Hiba: " . $e->getMessage());
+        }
+        return $id; 
     }
 
     public static function kapcsolattartoFelvitel(Kapcsolattarto $kapcsolattarto): int {

@@ -11,3 +11,11 @@ SELECT * FROM `statusz`;
 SELECT * FROM `kapcsolattarto`;
 
 SELECT * FROM `termek`;
+
+SELECT `id` FROM `termek`
+WHERE szeriaszam="33333333444444444444" AND statuszid="1"
+LIMIT 1;
+
+SELECT `id` FROM `kapcsolattarto`
+WHERE vnev="Garamszegi" AND knev="Tibor" AND unev="" AND telefon="+36307097052" AND email="tibor_garamszegi@yahoo.com"
+LIMIT 1;
