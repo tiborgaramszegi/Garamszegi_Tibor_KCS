@@ -4,8 +4,15 @@ include_once("../Model/adatbazisKezeles.php");
 include_once("../Model/kapcsolattarto.php");
 include_once("../Model/termek.php");
 
+
+
 function termekLeadasView(): void {
     include_once("../View/termekLeadasView.php");
+}
+
+function szervizOsszesitoView(): void {
+    $tomb = AdatbazisKezeles::szervizOsszesitoLekerdezese();
+    include_once("../View/szervizOsszesitoView.php");
 }
 
 function main():void {
@@ -57,9 +64,23 @@ function main():void {
         }
         else {
             // ha már létezik a termék az adatbázisban ugyanezel a szériaszámmal leadva
-            echo '<script type="text/javascript">alert("Ez a termék már leadott státuszban van!");</script>';
+            // echo '<script type="text/javascript">alert("Ez a termék már leadott státuszban van!");</script>';
+            echo '<script src="./hiba.js"></script>';
         }
         termekLeadasView();
+    }
+    else if (array_key_exists("folyamat", $_GET) && $_GET["folyamat"] == "modositas" && array_key_exists("id", $_GET)) {
+        AdatbazisKezeles::termekModositas($_GET["id"]);
+    }
+    else if (array_key_exists("oldal", $_GET) && $_GET["oldal"] == "leadas") {
+        termekLeadasView();
+    }
+    else if (array_key_exists("oldal", $_GET) && $_GET["oldal"] == "osszesito") {
+        szervizOsszesitoView();    
+    }
+    else {
+        // az alapértelmezett nézet:
+        szervizOsszesitoView();
     }
 }
 

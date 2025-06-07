@@ -1,4 +1,11 @@
 <?php
+
+include_once("../Model/termek.php");
+include_once("../Model/kapcsolattarto.php");
+include_once("../Model/statusz.php");
+include_once("../Model/szervizOsszesito.php");
+
+
 abstract class AdatbazisKezeles {
 
     public static function termekIdKerese(string $szeriaszam): int {
@@ -105,5 +112,62 @@ abstract class AdatbazisKezeles {
         }
         return $id;              
     }
+
+    public static function szervizOsszesitoLekerdezese(): array {
+        $tomb = [];
+        try {
+            $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
+            $stmt = $con->prepare("SELECT * FROM `termek` LEFT JOIN `kapcsolattarto` ON `termek`.`kapcsolattartoid` = `kapcsolattarto`.`id` 
+            LEFT JOIN `statusz` ON `statuszid` = `statusz`.`id`;");
+            $stmt->execute();
+            $stmt->bind_result($id, $szeriaszam, $gyarto, $tipus, $leadas, $statuszid, $statuszvaltizas, $kapcsolattartoid, $id1, 
+            $vnev, $knev, $unev, $telefon, $email, $id2, $leiras);
+
+            while($stmt->fetch()){
+                $termek = new Termek(
+                    $id,
+                    $szeriaszam,
+                    $gyarto,
+                    $tipus,
+                    new DateTime($leadas),
+                    $statuszid,
+                    new DateTime($statuszvaltizas),
+                    $kapcsolattartoid
+                );
+
+                $kapcsolattarto = new Kapcsolattarto(
+                    $id1,
+                    $vnev,
+                    $knev,
+                    $unev,
+                    $telefon,
+                    $email
+                );
+
+                $statusz = new Statusz(
+                    $id2,
+                    $leiras
+                );
+
+                $szervizOsszesito = new SzervizOsszesito(
+                    $termek,
+                    $kapcsolattarto,
+                    $statusz
+                );
+
+                $tomb[] = $szervizOsszesito;
+            }
+
+            $stmt->close();
+            $con->close();
+        } catch (Exception $e) {
+            echo("Hiba: " . $e->getMessage());
+        }       
+        return $tomb;
+    }
+
+    public static function termekModositas(int $id): void {
+
+    } 
 
 }

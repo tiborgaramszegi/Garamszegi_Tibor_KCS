@@ -1,0 +1,1 @@
+window.alert("Ez a termék már leadott státuszban van, ezért jelenleg nem lehet rögzíteni az adatbázisban!");
