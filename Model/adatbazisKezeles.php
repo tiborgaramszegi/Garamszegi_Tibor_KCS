@@ -5,7 +5,6 @@ include_once("../Model/kapcsolattarto.php");
 include_once("../Model/statusz.php");
 include_once("../Model/szervizOsszesito.php");
 
-
 abstract class AdatbazisKezeles {
 
     public static function termekIdKerese(string $szeriaszam): int {
@@ -117,8 +116,19 @@ abstract class AdatbazisKezeles {
         $tomb = [];
         try {
             $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
+            /*
             $stmt = $con->prepare("SELECT * FROM `termek` LEFT JOIN `kapcsolattarto` ON `termek`.`kapcsolattartoid` = `kapcsolattarto`.`id` 
-            LEFT JOIN `statusz` ON `statuszid` = `statusz`.`id`;");
+            LEFT JOIN `statusz` ON `statuszid` = `statusz`.`id` ORDER BY `statusz`.`id`;");
+            */
+
+            $stmt = $con->prepare("SELECT * FROM `termek` LEFT JOIN `kapcsolattarto` ON `termek`.`kapcsolattartoid` = `kapcsolattarto`.`id` 
+            LEFT JOIN `statusz` ON `statuszid` = `statusz`.`id`
+            WHERE NOT (`termek`.`statuszid` = 5 AND NOT (`termek`.`statuszvaltozas`=?))
+            ORDER BY `statusz`.`id`;");
+
+            $maiDatum = new DateTime(date("Y-m-d"));
+            $maiDatum = $maiDatum->format('Y-m-d');
+            $stmt->bind_param("s", $maiDatum);
             $stmt->execute();
             $stmt->bind_result($id, $szeriaszam, $gyarto, $tipus, $leadas, $statuszid, $statuszvaltizas, $kapcsolattartoid, $id1, 
             $vnev, $knev, $unev, $telefon, $email, $id2, $leiras);
@@ -166,8 +176,72 @@ abstract class AdatbazisKezeles {
         return $tomb;
     }
 
-    public static function termekModositas(int $id): void {
+    public static function termekKiolvasasIdalapjan(int $id): Termek {
+        try {
+            $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
+            $stmt = $con->prepare("SELECT * FROM termek WHERE id = ?;");
+            $stmt->bind_param("s", $id);    
+            $stmt->execute();
+            $stmt->bind_result($id, $szeriaszam, $gyarto, $tipus, $leadas, $statuszId, $statuszValtozas, $kapcsolattartoId);
+            $stmt->fetch();
 
-    } 
+            $termek = new Termek(
+                $id, 
+                $szeriaszam,
+                $gyarto,
+                $tipus,
+                new DateTime($leadas),
+                $statuszId,
+                new DateTime($statuszValtozas),
+                $kapcsolattartoId
+            );
+
+            $stmt->close();
+            $con->close();
+            return $termek;
+        } catch (Exception $e) {
+            echo("Hiba: " . $e->getMessage());
+            return new Termek(0, null, null, null, null, 0, null, 0);
+        }
+    }
+
+     public static function statuszokListaja(): array {
+        $statuszok = [];
+        try {
+            $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
+            $stmt = $con->prepare("SELECT * FROM `statusz`");
+            $stmt->execute();
+            $stmt->bind_result($id, $leiras);
+            while($stmt->fetch()){
+                $statusz = new Statusz(
+                    $id,
+                    $leiras
+                );
+                $statuszok[] = $statusz; 
+            }
+
+            $stmt->close();
+            $con->close();
+        } catch (Exception $e) {
+            echo("Hiba: " . $e->getMessage());
+        }
+        return $statuszok;
+    }
+
+    public static function termekModositas(int $id, int $statusz): void {
+        try {
+            $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
+            $stmt = $con->prepare("UPDATE `termek` SET `statuszid` = ?, `statuszvaltozas` = ? WHERE `id` = ?;");
+            $maiDatum = new DateTime(date("Y-m-d"));
+            $maiDatum = $maiDatum->format('Y-m-d');
+            $stmt->bind_param("dsd", $statusz, $maiDatum, $id);
+            $stmt->execute();
+
+            $stmt->close();
+            $con->close();
+        } catch (Exception $e) {
+            echo("Hiba: " . $e->getMessage());
+        }
+    }
 
 }

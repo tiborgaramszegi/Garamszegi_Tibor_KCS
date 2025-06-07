@@ -15,6 +15,13 @@ function szervizOsszesitoView(): void {
     include_once("../View/szervizOsszesitoView.php");
 }
 
+function termekModositasView(int $id): void {
+    $termek = AdatbazisKezeles::termekKiolvasasIdAlapjan($id);
+    $statuszok = AdatbazisKezeles::statuszokListaja();
+    include_once("../View/termekModositasView.php");
+}
+
+
 function main():void {
     if(array_key_exists("leadas", $_POST)) {
         // Termék leadása
@@ -70,13 +77,29 @@ function main():void {
         termekLeadasView();
     }
     else if (array_key_exists("folyamat", $_GET) && $_GET["folyamat"] == "modositas" && array_key_exists("id", $_GET)) {
-        AdatbazisKezeles::termekModositas($_GET["id"]);
+        // Módosítani akarjuk egy termék státuszát
+        termekModositasView($_GET["id"]);
     }
     else if (array_key_exists("oldal", $_GET) && $_GET["oldal"] == "leadas") {
         termekLeadasView();
     }
     else if (array_key_exists("oldal", $_GET) && $_GET["oldal"] == "osszesito") {
-        szervizOsszesitoView();    
+        szervizOsszesitoView();
+    }
+    else if(array_key_exists("modositas", $_POST)){
+        //Termék adatainak módosítása
+
+        echo $_POST["id"];
+        echo $_POST["statusz"];
+
+        AdatbazisKezeles::termekModositas($_POST["id"], $_POST["statusz"]);
+        szervizOsszesitoView();
+    }
+    
+    
+    else if (array_key_exists("megsem", $_POST)) {
+        // a termék adatainak módosítása felületen a Mégsem gomb lett megnyomva
+        szervizOsszesitoView();
     }
     else {
         // az alapértelmezett nézet:

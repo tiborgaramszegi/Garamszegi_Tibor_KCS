@@ -16,7 +16,7 @@
     <div class="container my-2">
         <div class="row">
             <div class="col-12">
-                <h1>Szerviz összesítő</h1>
+                <h1 class="text-center">Szerviz összesítő</h1>
                     <table class="table">
                         <thead class="table-dark">
                             <tr>
@@ -35,31 +35,34 @@
                         <?php 
                             foreach ($tomb as $item) {
                                 print("<tr ");
-                                switch ($item->getStatusz()->getId()) {
+                                switch ($item->getTermek()->getStatuszId()) {
                                     case 1:
-                                        $bntClass = "btn btn-primary";
+                                        $btnClass = "btn btn-primary";
                                         print(' class="table-primary">');
                                         break;
                                     case 2:
-                                        $class = "table-danger";
+                                        $btnClass = "btn btn-danger";
+                                        print(' class="table-danger">');
                                         break;
                                     case 3:
-                                        $class = "alkatresz";
+                                        $btnClass = "btn btn-warning";
+                                        print(' class="table-warning">');
                                         break;
                                     case 4:
-                                        $class = "javitas";
+                                        $btnClass = "btn btn-info";
+                                        print(' class="table-info">');
                                         break;
                                     case 5:
-                                        $class = "kesz";
+                                        $btnClass = "btn btn-success";
+                                        print(' class="table-success">');
                                         break;
                                 }
-                                
+                               
                                 print("<td>" . $item->getTermek()->getSzeriaszam() . "</td>");
                                 print("<td>" . $item->getTermek()->getGyarto() . "</td>");
                                 print("<td>" . $item->getTermek()->getTipus() . "</td>");
                                 print("<td>" . $item->getTermek()->getLeadas()->format('Y-m-d') . "</td>");
-                                //print("<td>" . '<a class="btn btn-primary" href="http://localhost/Garamszegi_Tibor_KCS/controller/controller.php?folyamat=modositas&id=' . $item->getTermek()->getId() . '">' . $item->getStatusz()->getLeiras() . "</a></td>");
-                                print("<td>" . '<a class="btn btn-primary" href="../controller/controller.php?folyamat=modositas&id=' . $item->getTermek()->getId() . '">' . $item->getStatusz()->getLeiras() . "</a></td>");
+                                print("<td>" . '<a class="' . $btnClass . '" href="../controller/controller.php?folyamat=modositas&id=' . $item->getTermek()->getId() . '">' . $item->getStatusz()->getLeiras() . "</a></td>");
                                 print("<td>" . $item->getTermek()->getStatuszValtozas()->format('Y-m-d') . "</td>");
                                 print("<td>" . $item->getKapcsolattarto()->getNev() . "</td>");
                                 print("<td>" . $item->getKapcsolattarto()->getTelefon() . "</td>");
@@ -74,7 +77,6 @@
     </div>
    
     <?php include_once("base/footer.html"); ?>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>    
