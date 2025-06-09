@@ -20,7 +20,6 @@
                 <form action="../controller/controller.php" method="post">
                     <input type="hidden" name="modositas">
                     <input type="hidden" name="id" value="<?= $termek->getId() ?>">
-
                     <div class="form-group my-2">
                         <label class="form-label" for="szeriaszam">Szériaszám</label>
                         <input class="form-control" type="text" name="szeriaszam" id="szeriaszam" readonly value="<?= $termek->getSzeriaszam() ?>">
@@ -33,7 +32,6 @@
                         <label class="form-label" for="tipus">Típus</label>
                         <input class="form-control" type="text" name="tipus" id="tipus" readonly value="<?= $termek->getTipus() ?>">
                     </div>
-                    
                     <div class="form-group my-2">
                         <label class="form-label" for="statusz">Státusz</label>
                         <select class="form-control" name="statusz" id="statusz" required>
@@ -50,7 +48,6 @@
                             ?>
                         </select>
                     </div>
-
                     <div class="form-group my-2">
                         <input type="submit" class="btn btn-danger" value="Módosítás">
                     </div>

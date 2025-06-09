@@ -38,27 +38,22 @@
 
                     <fieldset class="form-group border my-2 p-3">
                         <legend class="w-auto">A kapcsolattartó adatai</legend>
-
                         <div class="form-group my-2">
                             <label class="form-label" for="vnev">Vezetéknév</label>
                             <input class="form-control" type="text" name="vnev" id="vnev" required maxlength="30" placeholder="Kötelezően kitöltendő, maximum 30 karakter">
                         </div>
-
                         <div class="form-group my-2">
                             <label class="form-label" for="knev">Keresztnév</label>
                             <input class="form-control" type="text" name="knev" id="knev" required maxlength="30" placeholder="Kötelezően kitöltendő, maximum 30 karakter">
                         </div>
-
                         <div class="form-group my-2">
                             <label class="form-label" for="unev">Uónév</label>
                             <input class="form-control" type="text" name="unev" id="unev" maxlength="30" placeholder="Maximum 30 karakter">
                         </div>
-
                         <div class="form-group my-2">
                             <label class="form-label" for="telefon">Telefonszám</label>
                             <input class="form-control" type="text" name="telefon" id="telefon" maxlength="20" placeholder="Kötelezően kitöltendő, maximum 20 karakter">
                         </div>
-                        
                         <div class="form-group my-2">
                             <label class="form-label" for="email">E-mail cím</label>
                             <input class="form-control" type="email" name="email" id="email" maxlength="30" placeholder="Kötelezően kitöltendő, maximum 30 karakter">
@@ -68,14 +63,12 @@
                     <div class="form-group my-2">
                         <input type="submit" class="btn btn-primary" value="Felvitel">
                     </div>
-
                 </form>
             </div>
         </div>
     </div>
    
     <?php include_once("base/footer.html"); ?>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>    

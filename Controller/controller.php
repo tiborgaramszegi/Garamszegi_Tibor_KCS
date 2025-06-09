@@ -3,8 +3,8 @@
 include_once("../Model/adatbazisKezeles.php");
 include_once("../Model/kapcsolattarto.php");
 include_once("../Model/termek.php");
-
-
+include_once("../Model/statusz.php");
+include_once("../Model/szervizOsszesito.php");
 
 function termekLeadasView(): void {
     include_once("../View/termekLeadasView.php");
@@ -48,12 +48,13 @@ function main():void {
             // Létezik-e már ez a kapcsolattartó az adatbázisban?
             // - ha nem, 0-t kapunk vissza -> fel kell venni az új kapcsolattartót
             // - ha igen, visszakapjuk az ID-t
-            
             $id = AdatbazisKezeles::kapcsolattartoIdKerese($kapcsolattarto);
-            echo $id;
             if ($id == 0) {
                 // új kapcsolattartó felvitele, és az ID kinyerése az adatbázisból
                   $id = AdatbazisKezeles::kapcsolattartoFelvitel($kapcsolattarto);
+            }
+            else {
+                echo '<script src="./info.js"></script>';
             }
             
             // új termék felvitele
@@ -88,10 +89,6 @@ function main():void {
     }
     else if(array_key_exists("modositas", $_POST)){
         //Termék adatainak módosítása
-
-        echo $_POST["id"];
-        echo $_POST["statusz"];
-
         AdatbazisKezeles::termekModositas($_POST["id"], $_POST["statusz"]);
         szervizOsszesitoView();
     }

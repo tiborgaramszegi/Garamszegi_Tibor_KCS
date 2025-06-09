@@ -57,7 +57,6 @@
                                         print(' class="table-success">');
                                         break;
                                 }
-                               
                                 print("<td>" . $item->getTermek()->getSzeriaszam() . "</td>");
                                 print("<td>" . $item->getTermek()->getGyarto() . "</td>");
                                 print("<td>" . $item->getTermek()->getTipus() . "</td>");
@@ -67,8 +66,7 @@
                                 print("<td>" . $item->getKapcsolattarto()->getNev() . "</td>");
                                 print("<td>" . $item->getKapcsolattarto()->getTelefon() . "</td>");
                                 print("<td>" . $item->getKapcsolattarto()->getEmail() . "</td>");
-                                
-                            }
+                             }
                         ?>
                     </tbody>
                 </table>
