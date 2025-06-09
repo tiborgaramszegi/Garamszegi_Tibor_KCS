@@ -1,1 +1,1 @@
-window.alert("Ez a kapcsolattartó már létezik az adatbázisban, ezért nem lett újra létrehozva.");
+window.alert("Ez a kapcsolattartó már létezik az adatbázisban, ezért nem lett újra létrehozva. A termék viszont rögzításre került.");

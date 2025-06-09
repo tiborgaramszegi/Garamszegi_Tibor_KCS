@@ -16,7 +16,7 @@ SELECT * FROM `kapcsolattarto`;
 SELECT * FROM `termek`;
 
 SELECT `id` FROM `termek`
-WHERE szeriaszam="33333333444444444444" AND statuszid="1"
+WHERE szeriaszam="44444444444455555555" AND statuszid!="5"
 LIMIT 1;
 
 SELECT `id` FROM `kapcsolattarto`

@@ -71,7 +71,7 @@ function main():void {
             AdatbazisKezeles::termekFelvitel($termek);
         }
         else {
-            // ha már létezik a termék az adatbázisban ugyanezel a szériaszámmal leadva
+            // Már létezik a termék az adatbázisban ugyanezel a szériaszámmal leadva
             // echo '<script type="text/javascript">alert("Ez a termék már leadott státuszban van!");</script>';
             echo '<script src="./hiba.js"></script>';
         }

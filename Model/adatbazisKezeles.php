@@ -8,15 +8,15 @@ include_once("../Model/szervizOsszesito.php");
 abstract class AdatbazisKezeles {
 
     public static function termekIdKerese(string $szeriaszam): int {
-        // Létezik-e már ez a termék az adatbázisban ugyanezel a szériaszámmal leadva?
+        // Létezik-e már ez a termék az adatbázisban ugyanezel a szériaszámmal, és nincs még "Kész" állapotban?
+        // Ez azt jelenti, hogy egy terméket egy napon belül akár többször is le lehet adni - ha előtte már elkészült
         // - ha nem, 0-t adunk vissza
         // - ha igen, visszaadjuk az ID-t
 
         $id = 0;
         try {
             $con = new mysqli("localhost", "root", "", "Garamszegi_Tibor_KCS");
-            $stmt = $con->prepare("SELECT `id` FROM `termek` WHERE `szeriaszam`=? AND `statuszid`=1;");
-            
+            $stmt = $con->prepare("SELECT `id` FROM `termek` WHERE `szeriaszam`=? AND `statuszid`!=5;");
             $stmt->bind_param("s", $szeriaszam);  
             $stmt->execute();
             $stmt->bind_result($id2);
